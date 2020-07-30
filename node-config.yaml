@@ -1,0 +1,108 @@
+
+auth:
+    accessTokenValiditySeconds: 15768000
+    refreshTokenValiditySeconds: 15768000
+    secret: secret
+
+limits:
+    limitQueryTasks: 500
+    limitQueryFilters: 500
+    limitCreateTasks: 500
+
+host:
+    fqdn: home.f0xdev.ru
+    port: 8080
+    protocol: http://  
+
+projects:
+  - name: test-project
+    push:
+      transports:
+        - priority: HIGH
+          strategy: SINGLE
+          providers:
+            - provider: FIREBASE
+              name: Firebase
+              enabled: false
+              order: 1
+              latencyThresholdMs: 100
+              cfg:
+                json: "./appconfigs/projects/test/firebase.json"
+            - provider: STUB
+              name: FirebaseProviderHighStub0
+              enabled: true
+              order: 0
+              latencyThresholdMs: 100
+              cfg:
+                login: login
+                password: pwd
+                base_url: http://example.com
+                sender: stub_sender
+    sms:
+      transports:
+        - priority: HIGH
+          strategy: CIRCLE
+          attemptLifeTimeSec: 180
+          providers:
+            - provider: STUB
+              name: SmsProviderHighStub0
+              enabled: true
+              order: 0
+              latencyThresholdMs: 100
+              cfg:
+                login: login
+                password: pwd
+                base_url: http://example.com
+                sender: stub_sender
+            - provider: STUB
+              name: SmsProviderHighStub1
+              enabled: true
+              order: 1
+              latencyThresholdMs: 100
+              cfg:
+                login: login
+                password: pwd
+                base_url: http://example.com
+                sender: stub_sender
+        - priority: NORMAL
+          strategy: SINGLE
+          providers:
+            - provider: STUB
+              name: SmsProviderNormalStub0
+              enabled: true
+              order: 0
+              latencyThresholdMs: 100
+              cfg:
+                login: login
+                password: pwd
+                base_url: http://example.com
+                sender: stub_sender
+            - provider: STUB
+              name: SmsProviderNormalStub1
+              enabled: true
+              order: 1
+              latencyThresholdMs: 100
+              cfg:
+                login: login
+                password: pwd
+                base_url: http://example.com
+                sender: stub_sender
+            - provider: PROMEDIA_UTAMA
+              name: PromediaUtamaNormal0
+              enabled: false
+              order: 2
+              cfg:
+                login: login  # нужны реальные данные
+                password: pwd # нужны реальные данные
+                sender: ProMDemo
+                base_url: http://webapps.promediautama.com:29003/
+            - provider: PROMEDIA_UTAMA_OTP
+              name: PromediaUtamaNormal1
+              enabled: false
+              order: 3
+              latencyThresholdMs: 100
+              cfg:
+                login: login # нужны реальные данные
+                password: pwd # нужны реальные данные
+                sender: ProMDemo
+                base_url: http://202.53.250.219:29006/
